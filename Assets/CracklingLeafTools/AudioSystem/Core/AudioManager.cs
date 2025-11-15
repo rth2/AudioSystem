@@ -8,6 +8,7 @@ namespace CracklingLeafTools.AudioSystem.Core
         public static AudioManager Instance { get; private set; }
 
         [SerializeField] UnityEngine.Audio.AudioMixer audioMixer;
+        [SerializeField] AudioPool audioPool;
 
         #region Setup
         private void Awake()
@@ -17,6 +18,7 @@ namespace CracklingLeafTools.AudioSystem.Core
         void Initialize()
         {
             Debug.Log($"[Initialize] TODO");
+            audioPool.Initialize();
             //set up pool, load definitions, prepare mixer groups
         }
 
@@ -30,6 +32,7 @@ namespace CracklingLeafTools.AudioSystem.Core
         public void PlaySound(string soundKey)
         {
             //TODO: Lookup sound definition and trigger audiosource
+            AudioSource source = audioPool.GetAvailableSource();
         }
         /// <summary>
         /// Stops all currently playing sounds. Optional use cases.
