@@ -29,7 +29,7 @@ namespace CracklingLeafTools.AudioSystem.Core
         /// Requests a sound to play by name or key.
         /// </summary>
         /// <param name="soundKey">The identifier for the sound to play.</param>
-        public void PlaySound(string soundKey)
+        public void PlaySound(SoundKey soundKey )
         {
             //TODO: Lookup sound definition and trigger audiosource
             AudioSource source = audioPool.GetAvailableSource();
