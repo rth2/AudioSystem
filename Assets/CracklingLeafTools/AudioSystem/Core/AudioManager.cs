@@ -9,6 +9,7 @@ namespace CracklingLeafTools.AudioSystem.Core
 
         [SerializeField] UnityEngine.Audio.AudioMixer audioMixer;
         [SerializeField] AudioPool audioPool;
+        [SerializeField] SoundLibrary[] soundLibraries;
 
         #region Setup
         private void Awake()
@@ -29,7 +30,7 @@ namespace CracklingLeafTools.AudioSystem.Core
         /// Requests a sound to play by name or key.
         /// </summary>
         /// <param name="soundKey">The identifier for the sound to play.</param>
-        public void PlaySound(SoundKey soundKey )
+        public void PlaySound(string soundKey )
         {
             //TODO: Lookup sound definition and trigger audiosource
             AudioSource source = audioPool.GetAvailableSource();

@@ -10,6 +10,11 @@ namespace CracklingLeafTools.AudioSystem.Core
         menuName = "CracklingLeafTools/Audio System/Sound Definition")]
     public class SoundDefinition : ScriptableObject
     {
+        [SerializeField, HideInInspector]
+        string guid;
+
+        public string Guid => guid;
+
         [Header("Basic Info")]
         public string soundKey;
 
@@ -24,9 +29,19 @@ namespace CracklingLeafTools.AudioSystem.Core
         [Header("Mixer Routing (optional")]
         public UnityEngine.Audio.AudioMixerGroup outputGroup;
 
-        [Header("Advanced (Optional, Future")]
+        [Header("Advanced (Optional, Future)")]
         public float randomPitchMin = 1f;
         public float randomPitchMax = 1f;
 
+        #if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (string.IsNullOrEmpty(guid))
+            {
+                guid = System.Guid.NewGuid().ToString();
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+        }
+        #endif
     }
 }

@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a5c8f4b769d0c2408bdd2240e4452cd, type: 3}
-  m_Name: DragonBreath
+  m_Name: Gold
   m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::CracklingLeafTools.AudioSystem.Core.SoundDefinition
-  soundKey: DragonBreath
-  clip: {fileID: 8300000, guid: 880adb3b0d0b95646b646b35062dcfac, type: 3}
+  guid: 3a57b1e4-4fc3-4602-bc96-9ee3d6f094c9
+  soundKey: PickupGold
+  clip: {fileID: 8300000, guid: aa7bcf995e3f28b4c8067f99641f76ed, type: 3}
   volume: 1
   pitch: 1
   loop: 0

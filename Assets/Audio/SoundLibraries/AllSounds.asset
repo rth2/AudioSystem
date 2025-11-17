@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3573245d7e1bdc14d9bca619f3eb858b, type: 3}
+  m_Name: AllSounds
+  m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::SoundLibrary
+  libraryName: AllSounds
+  sounds:
+  - {fileID: 11400000, guid: a3bc43b81d57db545afe5a7cd8959612, type: 2}
+  - {fileID: 11400000, guid: 49da32dac145a1a4e94313ffc997b818, type: 2}
+  - {fileID: 11400000, guid: dcc9f1e280268944c9d66e7cea051fd7, type: 2}
+  - {fileID: 11400000, guid: ce38f2b48a3335d49b78819ac193b8bf, type: 2}

@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a5c8f4b769d0c2408bdd2240e4452cd, type: 3}
-  m_Name: Gold
+  m_Name: GoblinSound
   m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::CracklingLeafTools.AudioSystem.Core.SoundDefinition
-  soundKey: PickupGold
-  clip: {fileID: 8300000, guid: aa7bcf995e3f28b4c8067f99641f76ed, type: 3}
+  guid: edb9c440-7d15-42c4-aa8b-a0944d1382db
+  soundKey: Goblin
+  clip: {fileID: 8300000, guid: c37b1a99e0724a147a9e89c9fbf0216c, type: 3}
   volume: 1
   pitch: 1
   loop: 0

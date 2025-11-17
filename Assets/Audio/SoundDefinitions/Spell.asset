@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a5c8f4b769d0c2408bdd2240e4452cd, type: 3}
-  m_Name: GoblinSound
+  m_Name: Spell
   m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::CracklingLeafTools.AudioSystem.Core.SoundDefinition
-  soundKey: Goblin
-  clip: {fileID: 8300000, guid: c37b1a99e0724a147a9e89c9fbf0216c, type: 3}
+  guid: e737160a-034b-4ebb-918d-901e449b3c7a
+  soundKey: CastSpell
+  clip: {fileID: 8300000, guid: a34a686f6c974f847b875ef1ec56d27c, type: 3}
   volume: 1
   pitch: 1
   loop: 0
