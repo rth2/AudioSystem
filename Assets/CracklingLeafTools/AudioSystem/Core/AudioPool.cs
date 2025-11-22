@@ -5,9 +5,11 @@ namespace CracklingLeafTools.AudioSystem.Core
 {
     public class AudioPool : MonoBehaviour
     {
+        [Header("Pool Settings")]
         [SerializeField] int initialPoolSize = 10;
+        [SerializeField] bool allowExpansion = true;
 
-        List<AudioSource> audioSources = new();
+        List<PooledAudioSource> pooledSources = new();
 
         Transform poolParent;
 
@@ -18,34 +20,72 @@ namespace CracklingLeafTools.AudioSystem.Core
 
             poolParent = parent != null ? parent :  transform;
 
-            //todo: prewarm pool with initial pool size amount of audioSources.
+            //prewarm
+            for(int i = 0; i < initialPoolSize; i++) { CreateNewSource(); }
         }
 
         void ClearPool()
         {
-            for(int i = 0; i < audioSources.Count; i++)
+            for(int i = 0; i < pooledSources.Count; i++)
             {
-                if (audioSources[i] != null) { Destroy(audioSources[i].gameObject); }
+                if (pooledSources[i] != null && pooledSources[i].Source != null)
+                {
+                    Destroy(pooledSources[i].Source.gameObject);
+                }
             }
-            audioSources.Clear();
         }
 
         #endregion
 
         #region Audio Source Management
 
+        public void StopAll()
+        {
+            for(int i = 0; i < pooledSources.Count; i++)
+            {
+                PooledAudioSource pooled = pooledSources[i];
+                if(pooled != null && pooled.IsActive)
+                {
+                    if(pooled.Source != null && pooled.Source.isPlaying)
+                    {
+                        pooled.Source.Stop();
+                    }
+                    pooled.ReturnToPool();
+                }
+            }
+        }
+
         public AudioSource GetAvailableSource()
         {
-            // TODO: Find inactive or finished AudioSource.
-            // TODO: Expand pool if none available and allowed.
-            return null;
+            //find an idle source
+            foreach(PooledAudioSource pooled in pooledSources)
+            {
+                if(!pooled.IsActive) { return pooled.Activate(); }
+            }
+
+            //expand pool if needed
+            if(allowExpansion) { return CreateNewSource().Activate(); }
+
+            return null;    //pool exhausted
         }
 
-        public void ReturnToPool(AudioSource source)
+        PooledAudioSource CreateNewSource()
         {
-            // TODO: Stop playback, deactivate or reset source.
+            GameObject go = new GameObject("PooledAudioSource");
+            go.transform.SetParent(poolParent);
+            AudioSource src = go.AddComponent<AudioSource>();
+            src.playOnAwake = false;
+
+            PooledAudioSource pooled = new PooledAudioSource(src, OnSourceFinished);
+            pooledSources.Add(pooled);
+
+            return pooled;
         }
 
+        void OnSourceFinished(PooledAudioSource pooled)
+        {
+            pooled.ReturnToPool();
+        }
         #endregion
 
         #region Editor and Debug

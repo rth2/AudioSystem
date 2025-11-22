@@ -14,11 +14,17 @@ namespace CracklingLeafTools.AudioSystem.Core
         #region Setup
         private void Awake()
         {
+            if(Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);  //persistent
             Initialize();
         }
         void Initialize()
         {
-            Debug.Log($"[Initialize] TODO");
             audioPool.Initialize();
             //set up pool, load definitions, prepare mixer groups
         }
@@ -27,20 +33,53 @@ namespace CracklingLeafTools.AudioSystem.Core
 
         #region Public Playback API
         /// <summary>
-        /// Requests a sound to play by name or key.
+        /// Play sound using the sound definition
         /// </summary>
-        /// <param name="soundKey">The identifier for the sound to play.</param>
-        public void PlaySound(string soundKey )
+        /// <param name="def"></param>
+        public void PlaySound(SoundDefinition def)
         {
-            //TODO: Lookup sound definition and trigger audiosource
-            AudioSource source = audioPool.GetAvailableSource();
+            Debug.Log($"[audio manager] Play Sound: {def}");
+            if(def == null || def.clip == null) { return; }
+
+            AudioSource src = audioPool.GetAvailableSource();
+            if(src == null ) { return; }
+
+            Debug.Log($"source found");
+
+            src.clip = def.clip;
+            src.volume = def.volume;
+            src.pitch = (def.randomPitchMin != def.randomPitchMax)
+                ? Random.Range(def.randomPitchMin, def.randomPitchMax)
+                : def.pitch;
+
+            src.loop = def.loop;
+
+            if(def.outputGroup != null)
+            {
+                src.outputAudioMixerGroup = def.outputGroup;
+            }
+            Debug.Log($"play");
+            src.Play();
+        }
+
+        public void PlaySound(string guid)
+        {
+            foreach(SoundLibrary lib in soundLibraries)
+            {
+                SoundDefinition def = lib.Get(guid);
+                if(def != null)
+                {
+                    PlaySound(def);
+                    return;
+                }
+            }
         }
         /// <summary>
         /// Stops all currently playing sounds. Optional use cases.
         /// </summary>
         public void StopAllSounds()
         {
-            //todo: tell pool to stop or fade out all active audiosources
+            if(audioPool != null) { audioPool.StopAll(); }
         }
 
         #endregion
