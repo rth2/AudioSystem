@@ -15,7 +15,7 @@ MonoBehaviour:
   guid: a7fdb4e2-f1a5-43a9-903c-4077a9c79e91
   soundKey: DragonBreath
   clip: {fileID: 8300000, guid: 880adb3b0d0b95646b646b35062dcfac, type: 3}
-  volume: 1
+  volume: 0.75
   pitch: 1
   loop: 0
   outputGroup: {fileID: 0}

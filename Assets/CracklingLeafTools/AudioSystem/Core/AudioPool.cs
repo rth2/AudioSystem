@@ -82,6 +82,17 @@ namespace CracklingLeafTools.AudioSystem.Core
             return pooled;
         }
 
+        public void StartWatcher(AudioSource source)
+        {
+            for(int i = 0; i < pooledSources.Count; i++)
+            {
+                if (pooledSources[i].Source == source)
+                {
+                    pooledSources[i].StartWatcher();
+                }
+            }
+        }
+
         void OnSourceFinished(PooledAudioSource pooled)
         {
             pooled.ReturnToPool();

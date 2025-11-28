@@ -60,6 +60,7 @@ namespace CracklingLeafTools.AudioSystem.Core
             }
             Debug.Log($"play");
             src.Play();
+            audioPool.StartWatcher(src);
         }
 
         public void PlaySound(string guid)
