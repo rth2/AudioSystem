@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gold
   m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::CracklingLeafTools.AudioSystem.Core.SoundDefinition
   guid: 3a57b1e4-4fc3-4602-bc96-9ee3d6f094c9
-  soundKey: PickupGold
+  soundKey: Pickup Gold
   clip: {fileID: 8300000, guid: aa7bcf995e3f28b4c8067f99641f76ed, type: 3}
   volume: 1
   pitch: 1

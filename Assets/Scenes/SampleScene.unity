@@ -387,7 +387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::CracklingLeafTools.AudioSystem.Core.AudioManager
   audioMixer: {fileID: 0}
   audioPool: {fileID: 1611750561}
-  soundLibraries:
+  persistentLibraries:
   - {fileID: 11400000, guid: 2cbf0601d7a041244913da6da491c2c6, type: 2}
 --- !u!1 &1398784006
 GameObject:
@@ -419,6 +419,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestAudioPlayer
   library: {fileID: 11400000, guid: 2cbf0601d7a041244913da6da491c2c6, type: 2}
+  dragonLibrary: {fileID: 11400000, guid: 28aec815f30800b45add959f0b0ee3ce, type: 2}
+  goblinLibrary: {fileID: 11400000, guid: fb4a2bbcc30f9854795fbbf59915e104, type: 2}
 --- !u!4 &1398784008
 Transform:
   m_ObjectHideFlags: 0

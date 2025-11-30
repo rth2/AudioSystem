@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3573245d7e1bdc14d9bca619f3eb858b, type: 3}
-  m_Name: DragonBreath
-  m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::SoundLibrary
+  m_Name: Dragon
+  m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::CracklingLeafTools.AudioSystem.Core.SoundLibrary
   libraryName: Dragon
   sounds:
   - {fileID: 11400000, guid: a3bc43b81d57db545afe5a7cd8959612, type: 2}

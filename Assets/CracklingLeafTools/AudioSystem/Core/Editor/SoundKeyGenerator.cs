@@ -9,6 +9,7 @@ namespace CracklingLeafTools.AudioSystem.Core.Editor
     {
         const string GeneratedFolder = "Assets/CracklingLeafTools/AudioSystem/Core/Generated/";
         const string FileName = "SoundKey.cs";
+        public const char Separator = ':';
 
         [MenuItem("CracklingLeafTools/Audio System/ Generate SoundKey Constants")]
         public static void GenerateConstants()
@@ -36,7 +37,7 @@ namespace CracklingLeafTools.AudioSystem.Core.Editor
                 for (int i = 0; i < def.sounds.Count; i++)
                 {
                     string key = MakeStringSafe(def.sounds[i].soundKey);
-                    sb.AppendLine($"        public const string {libraryName}_{key} = \"{libraryName}_{key}\";");
+                    sb.AppendLine($"        public const string {libraryName}_{key} = \"{libraryName}{Separator}{key}\";");
                 }
             }
             sb.AppendLine("    }");
@@ -52,11 +53,17 @@ namespace CracklingLeafTools.AudioSystem.Core.Editor
         }
 
         //converts a definition name into a valid c# string
-        static string MakeStringSafe(string key)
+        public static string MakeStringSafe(string key)
         {
             if(string.IsNullOrWhiteSpace(key)) { return "_UnknownKey"; }
             //replace separators with underscores
             string safe = key.Replace(" ", "_").Replace("-", "_");
+            if(safe.Contains(Separator))
+            {
+                Debug.LogWarning($"Key \"{key}\" contains reserved separator '{Separator}', replacing with '_'.");
+                safe = safe.Replace(":", "_");
+            }
+            
             //remove invalid characters
             StringBuilder sb = new();
             foreach(char c in safe)

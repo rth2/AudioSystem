@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Codice.CM.Common.Zlib;
+using CracklingLeafTools.AudioSystem.Core.Editor;
 using UnityEngine;
 
 namespace CracklingLeafTools.AudioSystem.Core
@@ -9,7 +14,10 @@ namespace CracklingLeafTools.AudioSystem.Core
 
         [SerializeField] UnityEngine.Audio.AudioMixer audioMixer;
         [SerializeField] AudioPool audioPool;
-        [SerializeField] SoundLibrary[] soundLibraries;
+        [SerializeField] SoundLibrary[] persistentLibraries;
+        List<SoundLibrary> sceneLibraries;
+
+        bool isInitialized = false;
 
         #region Setup
         private void Awake()
@@ -25,10 +33,25 @@ namespace CracklingLeafTools.AudioSystem.Core
         }
         void Initialize()
         {
+            if (isInitialized) { return; }
+            isInitialized = true;
+            sceneLibraries = new();
             audioPool.Initialize();
             //set up pool, load definitions, prepare mixer groups
         }
 
+        #endregion
+
+        #region Library Management
+        public void ClearSceneLibraries() { sceneLibraries.Clear(); }
+        public void AddSceneLibrary(SoundLibrary library)
+        {
+            if(library != null && !persistentLibraries.Contains(library) && !sceneLibraries.Contains(library)) { sceneLibraries.Add(library); }
+        }
+        public void RemoveSceneLibrary(SoundLibrary library)
+        {
+            sceneLibraries.Remove(library);
+        }
         #endregion
 
         #region Public Playback API
@@ -38,18 +61,15 @@ namespace CracklingLeafTools.AudioSystem.Core
         /// <param name="def"></param>
         public void PlaySound(SoundDefinition def)
         {
-            Debug.Log($"[audio manager] Play Sound: {def}");
             if(def == null || def.clip == null) { return; }
 
             AudioSource src = audioPool.GetAvailableSource();
             if(src == null ) { return; }
 
-            Debug.Log($"source found");
-
             src.clip = def.clip;
             src.volume = def.volume;
             src.pitch = (def.randomPitchMin != def.randomPitchMax)
-                ? Random.Range(def.randomPitchMin, def.randomPitchMax)
+                ? UnityEngine.Random.Range(def.randomPitchMin, def.randomPitchMax)
                 : def.pitch;
 
             src.loop = def.loop;
@@ -58,19 +78,30 @@ namespace CracklingLeafTools.AudioSystem.Core
             {
                 src.outputAudioMixerGroup = def.outputGroup;
             }
-            Debug.Log($"play");
             src.Play();
             audioPool.StartWatcher(src);
         }
 
-        public void PlaySound(string guid)
+        public void PlaySound(string soundKey)
         {
-            foreach(SoundLibrary lib in soundLibraries)
+            //parts[0] = lib name; parts[1] = soundDef name
+            string[] parts = soundKey.Split(SoundKeyGenerator.Separator);
+            for(int i = 0; i < parts.Length; i++) { parts[i] = SoundKeyGenerator.MakeStringSafe(parts[i]); }
+            //Search scene libraries first
+            foreach(SoundLibrary sceneLib in sceneLibraries)
             {
-                SoundDefinition def = lib.Get(guid);
-                if(def != null)
+                if(sceneLib.SafeLibraryName == parts[0] && sceneLib.TryFind(parts[1], out SoundDefinition def))
                 {
                     PlaySound(def);
+                    return;
+                }
+            }
+            //Search persistent libraries second
+            foreach(SoundLibrary lib in persistentLibraries)
+            {
+                if (lib.SafeLibraryName == parts[0] && lib.TryFind(parts[1], out SoundDefinition sDef))
+                {
+                    PlaySound(sDef);
                     return;
                 }
             }

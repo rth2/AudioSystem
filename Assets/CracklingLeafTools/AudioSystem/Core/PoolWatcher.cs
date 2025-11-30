@@ -22,7 +22,6 @@ namespace CracklingLeafTools.AudioSystem.Core
             !pooled.Source.isPlaying ||
             !pooled.Source.gameObject.activeInHierarchy);
 
-            Debug.Log($"Watcher done");
             callback?.Invoke(pooled);
             Destroy(this);  //remove component
         }
