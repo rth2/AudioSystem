@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codice.CM.Common.Zlib;
 using CracklingLeafTools.AudioSystem.Core.Editor;
 using UnityEngine;
 
@@ -12,10 +11,12 @@ namespace CracklingLeafTools.AudioSystem.Core
     {
         public static AudioManager Instance { get; private set; }
 
-        [SerializeField] UnityEngine.Audio.AudioMixer audioMixer;
+        [SerializeField] UnityEngine.Audio.AudioMixer masterMixer;
         [SerializeField] AudioPool audioPool;
         [SerializeField] SoundLibrary[] persistentLibraries;
         List<SoundLibrary> sceneLibraries;
+
+        Dictionary<string, float> mixerValues = new();
 
         bool isInitialized = false;
 
@@ -117,12 +118,19 @@ namespace CracklingLeafTools.AudioSystem.Core
         #endregion
 
         #region Volume and Mixer Controls
-        /// <summary>
-        /// Sets the volume for a specific audio channel.
-        /// </summary>
-        public void SetVolume(string channelName, float volume)
+        public void SetVolume(string parameterName, float linearVolume)
         {
-            //todo: update internal state or audio mixer parameter.
+            if (masterMixer == null) return;
+
+            linearVolume = Mathf.Clamp01(linearVolume);
+
+            float dB = (linearVolume > 0f)
+                ? Mathf.Lerp(-80f, 0f, linearVolume)
+                : -80f;
+
+            masterMixer.SetFloat(parameterName, dB);
+
+            mixerValues[parameterName] = linearVolume;
         }
         #endregion
 

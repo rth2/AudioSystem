@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56358a84e0d6cfe4ea3005f424e85c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CracklingLeafTools.AudioSystem.Core::CracklingLeafTools.AudioSystem.Core.AudioManager
-  audioMixer: {fileID: 0}
+  masterMixer: {fileID: 0}
   audioPool: {fileID: 1611750561}
   persistentLibraries:
   - {fileID: 11400000, guid: 2cbf0601d7a041244913da6da491c2c6, type: 2}
