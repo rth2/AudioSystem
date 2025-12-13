@@ -55,16 +55,16 @@ namespace CracklingLeafTools.AudioSystem.Core
             }
         }
 
-        public AudioSource GetAvailableSource()
+        public AudioSource GetAvailableSource(PooledAudioConfig config)
         {
             //find an idle source
             foreach(PooledAudioSource pooled in pooledSources)
             {
-                if(!pooled.IsActive) { return pooled.Activate(); }
+                if(!pooled.IsActive) { return pooled.Activate(gameObject.transform.position, config); }
             }
 
             //expand pool if needed
-            if(allowExpansion) { return CreateNewSource().Activate(); }
+            if(allowExpansion) { return CreateNewSource().Activate(gameObject.transform.position, config); }
 
             return null;    //pool exhausted
         }

@@ -15,16 +15,32 @@ namespace CracklingLeafTools.AudioSystem.Core
             onFinished = callback;
         }
 
-        public AudioSource Activate()
+        /// <summary>
+        /// Ensures that the audiosource is set to a neutral, expected state and ready to use.
+        /// </summary>
+        public AudioSource Activate(Vector3 position, PooledAudioConfig config)
         {
             IsActive = true;
             Source.gameObject.SetActive(true);
+            Source.priority = config.priority;  //unity default priority
 
+            //playback
             Source.Stop();
             Source.clip = null;
             Source.volume = 1f;
             Source.pitch = 1f;
             Source.loop = false;
+
+            //spatial
+            Source.transform.position = position;
+            Source.spatialBlend = config.spatialBlend;
+            Source.panStereo = config.panStereo;
+            Source.dopplerLevel = config.dopplerLevel;
+            Source.rolloffMode = config.rolloffMode;
+            Source.minDistance = config.minDistance;
+            Source.maxDistance = config.maxDistance;
+
+            //routing
             Source.outputAudioMixerGroup = null;
 
             //make sure no old watcher exists
@@ -33,8 +49,7 @@ namespace CracklingLeafTools.AudioSystem.Core
             {
                 Object.Destroy(existing);
             }
-            //add a fresh watcher
-            //Source.gameObject.AddComponent<PoolWatcher>().BeginWatching(this, onFinished);
+
             return Source;
         }
 

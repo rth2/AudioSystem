@@ -8,7 +8,7 @@ namespace CracklingLeafTools.AudioSystem.Core
 {
     [CreateAssetMenu(
     fileName = "SoundLibrary",
-    menuName = "CracklingLeafTools/Audio System/SoundLibrary")]
+    menuName = "CracklingLeafTools/Audio System/Sounds/SoundLibrary")]
     public class SoundLibrary : ScriptableObject
     {
         public string libraryName;

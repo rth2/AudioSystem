@@ -94,3 +94,5 @@ MonoBehaviour:
   masterMixer: {fileID: 0}
   audioPool: {fileID: 6951600219535336761}
   persistentLibraries: []
+  config2d: {fileID: 11400000, guid: 73ae547f876a6324d889ae6e8ee046fd, type: 2}
+  config3d: {fileID: 11400000, guid: cb782b6159bc96649bcea0b94ce11c60, type: 2}

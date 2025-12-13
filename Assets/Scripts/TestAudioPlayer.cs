@@ -14,8 +14,10 @@ public class TestAudioPlayer : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha3)) { AudioManager.Instance.PlaySound(SoundKey.AllSounds_Pickup_Gold); }
         else if (Input.GetKeyDown(KeyCode.Alpha4)) { AudioManager.Instance.PlaySound(SoundKey.AllSounds_CastSpell); }
         else if (Input.GetKeyDown(KeyCode.Alpha5)) { AudioManager.Instance.PlaySound(SoundKey.Dragon_DragonBreath); }
+        else if (Input.GetKeyDown(KeyCode.Alpha6)) { AudioManager.Instance.PlaySound(SoundKey.AllSounds_Pickup_Gold, new Vector3(500, 0, 0)); }
+        else if (Input.GetKeyDown(KeyCode.Alpha7)) { AudioManager.Instance.PlaySound(SoundKey.AllSounds_Pickup_Gold, new Vector3(0, 0, 0)); }
 
-        if(Input.GetKeyDown(KeyCode.D)) { AudioManager.Instance.AddSceneLibrary(dragonLibrary); }
+        if (Input.GetKeyDown(KeyCode.D)) { AudioManager.Instance.AddSceneLibrary(dragonLibrary); }
         if(Input.GetKeyDown(KeyCode.A)) { AudioManager.Instance.AddSceneLibrary(library); }
         if (Input.GetKeyDown(KeyCode.G)) { AudioManager.Instance.AddSceneLibrary(goblinLibrary); }
 

@@ -7,7 +7,7 @@ namespace CracklingLeafTools.AudioSystem.Core
     /// </summary>
     [CreateAssetMenu(
         fileName = "SoundDefinition",
-        menuName = "CracklingLeafTools/Audio System/Sound Definition")]
+        menuName = "CracklingLeafTools/Audio System/Sounds/Sound Definition")]
     public class SoundDefinition : ScriptableObject
     {
         [Header("Basic Info")]

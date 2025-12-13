@@ -11,11 +11,18 @@ namespace CracklingLeafTools.AudioSystem.Core
     {
         public static AudioManager Instance { get; private set; }
 
+        [Header("Dependencies")]
         [SerializeField] UnityEngine.Audio.AudioMixer masterMixer;
         [SerializeField] AudioPool audioPool;
-        [SerializeField] SoundLibrary[] persistentLibraries;
-        List<SoundLibrary> sceneLibraries;
 
+        [Header("Persisting Libraries")]
+        [SerializeField] SoundLibrary[] persistentLibraries;
+
+        [Header("Config Files")]
+        [SerializeField] PooledAudioConfig config2d;
+        [SerializeField] PooledAudioConfig config3d;
+
+        List<SoundLibrary> sceneLibraries;
         Dictionary<string, float> mixerValues = new();
 
         bool isInitialized = false;
@@ -55,17 +62,17 @@ namespace CracklingLeafTools.AudioSystem.Core
         }
         #endregion
 
-        #region Public Playback API
+        #region Various Playbacks
         /// <summary>
         /// Play sound using the sound definition
         /// </summary>
         /// <param name="def"></param>
-        public void PlaySound(SoundDefinition def)
+        void PlaySound(SoundDefinition def, PooledAudioConfig config)
         {
-            if(def == null || def.clip == null) { return; }
+            if (def == null || def.clip == null) { return; }
 
-            AudioSource src = audioPool.GetAvailableSource();
-            if(src == null ) { return; }
+            AudioSource src = audioPool.GetAvailableSource(config);
+            if (src == null) { return; }
 
             src.clip = def.clip;
             src.volume = def.volume;
@@ -75,13 +82,46 @@ namespace CracklingLeafTools.AudioSystem.Core
 
             src.loop = def.loop;
 
-            if(def.outputGroup != null)
+            if (def.outputGroup != null)
             {
                 src.outputAudioMixerGroup = def.outputGroup;
             }
             src.Play();
             audioPool.StartWatcher(src);
         }
+
+        void PlaySound(SoundDefinition def, Vector3 position, PooledAudioConfig config)
+        {
+            if (def == null || def.clip == null) return;
+
+            AudioSource src = audioPool.GetAvailableSource(config);
+            if (src == null) return;
+
+            // Positioning
+            src.transform.position = position;
+
+            // Standard setup (same as non-positional)
+            src.clip = def.clip;
+            src.volume = def.volume;
+            src.pitch = (def.randomPitchMin != def.randomPitchMax)
+                ? UnityEngine.Random.Range(def.randomPitchMin, def.randomPitchMax)
+                : def.pitch;
+
+            src.loop = def.loop;
+
+            if (def.outputGroup != null)
+            {
+                src.outputAudioMixerGroup = def.outputGroup;
+            }
+
+            src.Play();
+            audioPool.StartWatcher(src);
+        }
+
+        #endregion
+
+        #region Public Playback API
+        
 
         public void PlaySound(string soundKey)
         {
@@ -93,7 +133,7 @@ namespace CracklingLeafTools.AudioSystem.Core
             {
                 if(sceneLib.SafeLibraryName == parts[0] && sceneLib.TryFind(parts[1], out SoundDefinition def))
                 {
-                    PlaySound(def);
+                    PlaySound(def, config2d);
                     return;
                 }
             }
@@ -102,11 +142,41 @@ namespace CracklingLeafTools.AudioSystem.Core
             {
                 if (lib.SafeLibraryName == parts[0] && lib.TryFind(parts[1], out SoundDefinition sDef))
                 {
-                    PlaySound(sDef);
+                    PlaySound(sDef, config2d);
                     return;
                 }
             }
         }
+
+        public void PlaySound(string soundKey, Vector3 position)
+        {
+            string[] parts = soundKey.Split(SoundKeyGenerator.Separator);
+            for (int i = 0; i < parts.Length; i++)
+                parts[i] = SoundKeyGenerator.MakeStringSafe(parts[i]);
+
+            // Scene libraries first
+            foreach (SoundLibrary sceneLib in sceneLibraries)
+            {
+                if (sceneLib.SafeLibraryName == parts[0] &&
+                    sceneLib.TryFind(parts[1], out SoundDefinition def))
+                {
+                    PlaySound(def, position, config3d);
+                    return;
+                }
+            }
+
+            // Persistent libraries second
+            foreach (SoundLibrary lib in persistentLibraries)
+            {
+                if (lib.SafeLibraryName == parts[0] &&
+                    lib.TryFind(parts[1], out SoundDefinition def))
+                {
+                    PlaySound(def, position, config3d);
+                    return;
+                }
+            }
+        }
+
         /// <summary>
         /// Stops all currently playing sounds. Optional use cases.
         /// </summary>
