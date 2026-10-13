@@ -1,0 +1,4 @@
+﻿<Solution>
+  <Project Path="CracklingLeafTools.AudioSystem.Core.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+</Solution>
